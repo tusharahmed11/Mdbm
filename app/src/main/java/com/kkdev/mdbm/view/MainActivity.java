@@ -1,4 +1,4 @@
-package com.kkdev.mdbm;
+package com.kkdev.mdbm.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
+import com.kkdev.mdbm.R;
 import com.kkdev.mdbm.adapter.HomePopularMovieAdapter;
 import com.kkdev.mdbm.adapter.SliderPagerAdapter;
 import com.kkdev.mdbm.databinding.ActivityMainBinding;

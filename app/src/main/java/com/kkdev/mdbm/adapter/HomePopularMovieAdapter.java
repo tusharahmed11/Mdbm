@@ -1,9 +1,13 @@
 package com.kkdev.mdbm.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -12,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kkdev.mdbm.R;
 import com.kkdev.mdbm.databinding.ItemMovieListBinding;
 import com.kkdev.mdbm.model.Movie;
+import com.kkdev.mdbm.view.MovieDetailActivity;
 
 import java.util.ArrayList;
 
@@ -44,9 +49,25 @@ public class HomePopularMovieAdapter extends RecyclerView.Adapter<HomePopularMov
 
     class PopularMovieViewHolder extends RecyclerView.ViewHolder{
         private ItemMovieListBinding itemMovieListBinding;
-        public PopularMovieViewHolder(@NonNull ItemMovieListBinding itemMovieListBinding) {
+        private ImageView moviewImage;
+        public PopularMovieViewHolder(@NonNull final ItemMovieListBinding itemMovieListBinding) {
             super(itemMovieListBinding.getRoot());
             this.itemMovieListBinding = itemMovieListBinding;
+            moviewImage = itemMovieListBinding.itemMovieImage;
+            itemMovieListBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position!=RecyclerView.NO_POSITION){
+                        Movie selectedMovie = movieArrayList.get(position);
+                        Intent intent = new Intent(context, MovieDetailActivity.class);
+                        intent.putExtra("movie",selectedMovie);
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity) context, (View) moviewImage,"sharedName");
+
+                        context.startActivity(intent,options.toBundle());
+                    }
+                }
+            });
         }
     }
 

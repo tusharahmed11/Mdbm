@@ -21,8 +21,12 @@ import retrofit2.Retrofit;
 
 public class MovieRepository  {
     private ArrayList<Movie> movies = new ArrayList<>();
+    private ArrayList<Cast> casts = new ArrayList<>();
     private MutableLiveData<List<Movie>> mutableLiveData = new MutableLiveData<>();
     private MutableLiveData<List<Movie>> recentMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<Cast>> castMutableLiveData = new MutableLiveData<>();
+
+
     private Application application;
 
     public MovieRepository(Application application) {
@@ -84,4 +88,25 @@ public class MovieRepository  {
 
         return recentMutableLiveData;
     }
+    public MutableLiveData<List<Cast>> getCastMutableLiveData(int movie_id) {
+        MovieDataService movieDataService = RetrofitInstance.getService();
+        Call<CastResponse> castResponseCall = movieDataService.getCast(movie_id,application.getApplicationContext().getString(R.string.api_key));
+        castResponseCall.enqueue(new Callback<CastResponse>() {
+            @Override
+            public void onResponse(Call<CastResponse> call, Response<CastResponse> response) {
+                CastResponse castResponse = response.body();
+                if (castResponse!=null && castResponse.getCast()!=null){
+                    casts = (ArrayList<Cast>) castResponse.getCast();
+                    castMutableLiveData.setValue(casts);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CastResponse> call, Throwable t) {
+
+            }
+        });
+        return castMutableLiveData;
+    }
+
 }
